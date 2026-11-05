@@ -1,0 +1,931 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#102b50">
+<meta name="description" content="SI-MUDA: Sistem Informasi Pendaftaran Komunitas dan Wirausaha Pemuda DISPORAPAR Kabupaten Kuningan.">
+<title>SI-MUDA | Sistem Informasi Pemuda Kuningan</title>
+<style>
+:root {
+  --navy: #102b50;
+  --navy-dark: #091a32;
+  --blue: #28679d;
+  --blue-light: #4381b1;
+  --sky: #eaf3fb;
+  --sky-light: #f5f8fc;
+  --ink: #233b55;
+  --muted: #8291a3;
+  --line: #e8edf2;
+  --bg: #f5f7fa;
+  --white: #ffffff;
+  --green: #27845c;
+  --green-bg: #eaf7ef;
+  --orange: #c88938;
+  --orange-bg: #fff5e8;
+  --red: #c45d5d;
+  --red-bg: #fff0f0;
+  --shadow: 0 12px 35px rgba(27, 53, 80, 0.07);
+  --shadow-lg: 0 20px 50px rgba(16, 43, 80, 0.15);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.5;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button, input, select, textarea { font: inherit; }
+button, a { cursor: pointer; }
+a { text-decoration: none; color: inherit; }
+.hidden { display: none !important; }
+.wrap { width: min(1160px, calc(100% - 40px)); margin: auto; }
+
+/* Typography & Badges */
+.eyebrow { font-size: 10px; letter-spacing: 1.4px; font-weight: 800; color: #5483aa; text-transform: uppercase; }
+.muted { color: var(--muted); }
+.brand { display: flex; align-items: center; gap: 11px; }
+.brand-mark { height: 42px; width: 42px; border-radius: 12px; background: var(--navy); color: var(--white); display: grid; place-items: center; font-weight: 850; font-size: 16px; letter-spacing: -1px; }
+.brand b { display: block; color: var(--navy); font-size: 16px; letter-spacing: 0.3px; line-height: 1.2; }
+.brand small { display: block; color: var(--muted); font-size: 10px; margin-top: 2px; }
+
+/* Buttons */
+.btn { border: 0; border-radius: 9px; padding: 10px 16px; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease; }
+.btn-primary { background: var(--navy); color: var(--white); }
+.btn-primary:hover { background: #1d4773; transform: translateY(-1px); }
+.btn-outline { border: 1px solid #dce5ed; color: var(--navy); background: var(--white); }
+.btn-outline:hover { background: var(--sky); border-color: var(--blue-light); }
+.btn-soft { background: var(--sky); color: var(--blue); }
+.btn-soft:hover { background: #d7e8f7; }
+.btn-danger { background: var(--red-bg); color: var(--red); }
+.btn-sm { padding: 6px 11px; font-size: 11px; border-radius: 7px; }
+
+/* Role Gateway */
+.role-gateway { min-height: 100vh; background: linear-gradient(145deg, #f5f8fc, #eaf2f9); display: grid; place-items: center; padding: 28px 16px; }
+.gateway-wrap { width: min(880px, 100%); }
+.gateway-head { text-align: center; margin-bottom: 32px; }
+.gateway-head .brand { justify-content: center; margin-bottom: 20px; }
+.gateway-head h1 { font-size: clamp(24px, 4vw, 36px); color: var(--navy); letter-spacing: -1px; margin: 10px 0; }
+.gateway-head p { color: var(--muted); font-size: 13px; max-width: 520px; margin: 0 auto; }
+.gateway-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.gateway-card { background: var(--white); border: 1px solid #e2eaf1; border-radius: 18px; padding: 26px; box-shadow: var(--shadow); display: flex; flex-direction: column; }
+.gateway-icon { height: 50px; width: 50px; border-radius: 14px; background: var(--sky); color: var(--blue); display: grid; place-items: center; font-size: 22px; margin-bottom: 18px; }
+.gateway-card h2 { font-size: 19px; color: var(--navy); margin-bottom: 8px; }
+.gateway-card p { font-size: 12px; line-height: 1.7; color: var(--muted); margin-bottom: 22px; }
+.gateway-card .btn { width: 100%; margin-top: auto; }
+.gateway-foot { text-align: center; margin-top: 25px; color: var(--muted); font-size: 11px; }
+
+/* Landing Page */
+.landing { min-height: 100vh; background: var(--white); }
+.public-nav { height: 80px; display: flex; align-items: center; justify-content: space-between; }
+.public-nav nav { display: flex; align-items: center; gap: 20px; font-size: 13px; color: var(--muted); }
+.hero { display: grid; grid-template-columns: 1.05fr 0.95fr; align-items: center; gap: 40px; padding: 50px 0; }
+.hero h1 { font-size: clamp(36px, 4.5vw, 58px); line-height: 1.1; letter-spacing: -2px; color: var(--navy); margin: 16px 0; }
+.hero h1 span { color: var(--blue-light); }
+.hero-copy > p { max-width: 500px; color: var(--muted); font-size: 14px; line-height: 1.8; }
+.hero-actions { display: flex; gap: 12px; margin-top: 24px; }
+.stats-strip { border: 1px solid var(--line); border-radius: 14px; padding: 20px 24px; display: grid; grid-template-columns: repeat(4, 1fr); margin: 20px auto 60px; }
+.stats-strip div { border-right: 1px solid var(--line); padding-left: 20px; }
+.stats-strip div:first-child { padding-left: 0; }
+.stats-strip div:last-child { border: 0; }
+.stats-strip b { color: var(--blue-light); font-size: 20px; display: block; }
+.stats-strip span { font-size: 11px; color: var(--muted); }
+.features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 60px; }
+.feature { border: 1px solid var(--line); border-radius: 14px; padding: 22px; }
+.feature-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--sky); display: grid; place-items: center; color: var(--blue); font-size: 18px; margin-bottom: 14px; }
+.feature h3 { font-size: 15px; color: var(--navy); margin-bottom: 6px; }
+.feature p { font-size: 12px; color: var(--muted); line-height: 1.7; }
+.footer { background: #f8fafc; padding: 20px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+
+/* Auth Layout */
+.auth { min-height: 100vh; display: grid; grid-template-columns: 0.85fr 1.15fr; background: var(--white); }
+.auth-side { background: linear-gradient(145deg, var(--navy), #1e5685); padding: 40px 8%; color: var(--white); display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+.auth-main { display: grid; place-items: center; padding: 35px 20px; }
+.auth-card { width: min(420px, 100%); }
+.field { display: flex; flex-direction: column; gap: 6px; margin: 14px 0; }
+.field label { font-size: 11px; font-weight: 700; color: #52667d; }
+.field input, .field select, .field textarea { width: 100%; border: 1px solid #e1e8ef; border-radius: 8px; padding: 11px 13px; outline: none; background: var(--white); color: var(--ink); font-size: 12px; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--blue-light); box-shadow: 0 0 0 3px var(--sky); }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.alert { padding: 11px 13px; border-radius: 8px; background: var(--green-bg); color: var(--green); font-size: 11px; margin: 12px 0; }
+.alert.error { background: var(--red-bg); color: var(--red); }
+.demo-hint { background: var(--sky-light); border: 1px dashed #c0d8ed; border-radius: 9px; padding: 12px; font-size: 11px; line-height: 1.6; color: #587087; margin-top: 16px; }
+
+/* App Shell & Sidebar */
+.app-shell { min-height: 100vh; }
+.sidebar { width: 250px; background: var(--white); border-right: 1px solid var(--line); position: fixed; inset: 0 auto 0 0; z-index: 20; padding: 22px 16px; display: flex; flex-direction: column; }
+.sidebar .brand { padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.side-label { font-size: 9px; letter-spacing: 1.2px; color: var(--muted); font-weight: 800; padding: 20px 10px 8px; }
+.side-link { width: 100%; border: 0; background: transparent; text-align: left; padding: 10px 12px; border-radius: 8px; color: #62768b; font-size: 12px; display: flex; align-items: center; gap: 10px; margin: 2px 0; transition: 0.15s; }
+.side-link:hover, .side-link.active { background: var(--sky); color: var(--blue); font-weight: 700; }
+.side-link .ico { width: 20px; text-align: center; font-size: 14px; }
+.side-bottom { margin-top: auto; border-top: 1px solid var(--line); padding-top: 12px; }
+.app-main { margin-left: 250px; min-height: 100vh; width: calc(100% - 250px); }
+.topbar { min-height: 64px; background: var(--white); border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; position: sticky; top: 0; z-index: 10; gap: 12px; }
+.topbar h2 { font-size: 15px; color: var(--navy); line-height: 1.2; margin: 0; }
+.topbar small { font-size: 10px; color: var(--muted); display: block; }
+.top-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.user-mini { display: flex; align-items: center; gap: 9px; text-align: right; }
+.avatar { width: 36px; height: 36px; border-radius: 10px; background: var(--sky); color: var(--blue); display: grid; place-items: center; font-weight: 800; font-size: 13px; flex-shrink: 0; }
+.page { padding: 24px; max-width: 1400px; margin: 0 auto; width: 100%; box-sizing: border-box; }
+
+/* Dashboard Distinct Sections */
+.admin-header { background: linear-gradient(135deg, var(--navy-dark), var(--navy)); color: var(--white); padding: 22px; border-radius: 14px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow); gap: 16px; flex-wrap: wrap; }
+.admin-badge { background: #ffa800; color: #000; font-weight: 800; font-size: 9px; padding: 4px 9px; border-radius: 20px; text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 6px; }
+
+.user-header { background: linear-gradient(110deg, #1b4974, #28699b); color: var(--white); border-radius: 14px; padding: 22px; margin-bottom: 20px; box-shadow: var(--shadow); }
+
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+.stat-card { background: var(--white); border: 1px solid var(--line); border-radius: 12px; padding: 16px; box-shadow: var(--shadow); width: 100%; box-sizing: border-box; }
+.stat-card.highlight { border-left: 4px solid var(--navy); }
+.stat-top { display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 10px; font-weight: 700; gap: 8px; }
+.stat-icon { height: 32px; width: 32px; border-radius: 8px; background: var(--sky); color: var(--blue); display: grid; place-items: center; font-size: 16px; flex-shrink: 0; }
+.stat-card strong { display: block; font-size: 22px; color: var(--navy); margin: 8px 0 2px; }
+.stat-card small { font-size: 10px; color: var(--muted); }
+
+.content-grid { display: grid; grid-template-columns: 1.5fr 0.85fr; gap: 18px; align-items: start; }
+.panel { background: var(--white); border: 1px solid var(--line); border-radius: 12px; padding: 18px; box-shadow: var(--shadow); width: 100%; box-sizing: border-box; }
+.panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 10px; flex-wrap: wrap; }
+.panel-head h3 { font-size: 13px; color: var(--navy); margin: 0; }
+
+/* Data Tables */
+.table-wrap { overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; }
+table { border-collapse: collapse; width: 100%; min-width: 500px; }
+th { text-align: left; background: #f8fafc; color: var(--muted); font-size: 9px; letter-spacing: 0.5px; padding: 10px; text-transform: uppercase; white-space: nowrap; }
+td { font-size: 11px; color: #506579; padding: 12px 10px; border-bottom: 1px solid #eff2f5; }
+td b { color: var(--navy); }
+.cell-type { display: block; font-size: 9px; color: var(--muted); margin-top: 1px; }
+
+/* Status Badges */
+.status { display: inline-block; border-radius: 20px; padding: 3px 8px; font-size: 9px; font-weight: 750; background: var(--orange-bg); color: var(--orange); white-space: nowrap; }
+.status.approved { background: var(--green-bg); color: var(--green); }
+.status.review { background: #edf4ff; color: #4b7fb6; }
+.status.revision { background: #fff0e9; color: #c16d43; }
+.status.rejected { background: var(--red-bg); color: var(--red); }
+
+/* Chart Bars */
+.bar-container { background: #eef4f9; height: 12px; border-radius: 10px; overflow: hidden; margin: 12px 0; display: flex; }
+.bar-segment { height: 100%; transition: width 0.3s; }
+.bar-legend { display: flex; gap: 16px; font-size: 10px; color: var(--muted); margin-top: 8px; flex-wrap: wrap; }
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+
+/* Modal & Toast */
+.backdrop { position: fixed; inset: 0; background: rgba(16, 43, 80, 0.5); backdrop-filter: blur(2px); z-index: 50; display: grid; place-items: center; padding: 16px; }
+.modal { background: var(--white); border-radius: 14px; width: min(550px, 100%); max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg); }
+.modal-head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+.modal-body { padding: 20px; }
+.toast { position: fixed; right: 20px; bottom: 20px; background: var(--navy); color: var(--white); padding: 12px 18px; border-radius: 8px; font-size: 12px; z-index: 60; box-shadow: var(--shadow-lg); }
+
+/* Responsive Adjustments */
+.sidebar-backdrop { display: none; }
+
+@media (max-width: 1024px) {
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .content-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 960px) {
+  .hero { grid-template-columns: 1fr; text-align: center; }
+  .hero-copy > p { margin: 0 auto; }
+  .hero-actions { justify-content: center; }
+  .stats-strip { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+  .stats-strip div { border: 0; padding: 0; }
+  .features { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .sidebar { width: 260px; transform: translateX(-105%); transition: transform 0.25s ease; box-shadow: var(--shadow-lg); }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-backdrop { display: block; position: fixed; inset: 0; z-index: 15; background: rgba(16, 43, 80, 0.4); opacity: 0; visibility: hidden; transition: 0.2s; }
+  .sidebar-backdrop.show { opacity: 1; visibility: visible; }
+  .app-main { margin-left: 0; width: 100%; }
+  .topbar { padding: 10px 16px; }
+  .user-mini div:first-child { display: block; }
+  .user-mini small { font-size: 9px; }
+  .page { padding: 16px 12px; }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .stat-card { padding: 12px; }
+  .stat-card strong { font-size: 18px; }
+  .auth { grid-template-columns: 1fr; }
+  .auth-side { display: none; }
+  .gateway-cards { grid-template-columns: 1fr; }
+  .admin-header { flex-direction: column; align-items: flex-start; gap: 12px; padding: 16px; }
+  .admin-header .btn { width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .topbar h2 { font-size: 13px; }
+  .topbar small { font-size: 9px; }
+  .stat-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- 1. ROLE GATEWAY -->
+<div id="role-gateway" class="role-gateway hidden">
+ <div class="gateway-wrap">
+  <div class="gateway-head">
+   <a class="brand" href="#" onclick="return false"><span class="brand-mark">SM</span><span><b>SI-MUDA</b><small>Kabupaten Kuningan</small></span></a>
+   <span class="eyebrow" style="margin-top:16px;display:block">PORTAL HAK AKSES PENGGUNA</span>
+   <h1>Sistem Informasi Pemuda</h1>
+   <p>Silakan pilih jenis akses akun Anda. Halaman administrator dan user pemuda terpisah untuk keamanan data.</p>
+  </div>
+  <div class="gateway-cards">
+   <article class="gateway-card">
+    <div class="gateway-icon">♙</div>
+    <h2>Login Admin DISPORAPAR</h2>
+    <p>Akses khusus administrator pengelola untuk memverifikasi pendaftaran, mengunduh rekapitulasi, dan mengawasi statistik pemuda.</p>
+    <button class="btn btn-primary" onclick="showAuth('login','admin')">Masuk sebagai Admin →</button>
+   </article>
+   <article class="gateway-card">
+    <div class="gateway-icon">♧</div>
+    <h2>Login User Pemuda</h2>
+    <p>Akses untuk pemuda/organisasi untuk mengajukan pendaftaran komunitas baru, wirausaha, dan memantau status persetujuan.</p>
+    <button class="btn btn-primary" onclick="showAuth('login','user')">Masuk sebagai User →</button>
+   </article>
+  </div>
+  <div class="gateway-foot">
+   © 2026 SI-MUDA · Bidang Kepemudaan DISPORAPAR Kabupaten Kuningan<br>
+   <a href="#" onclick="showLanding()" style="color:var(--blue);font-weight:700;display:inline-block;margin-top:8px">Lihat Halaman Informasi Publik</a>
+  </div>
+ </div>
+</div>
+
+<!-- 2. LANDING PAGE -->
+<div id="landing" class="landing">
+ <header class="public-nav wrap">
+  <a class="brand" href="#"><span class="brand-mark">SM</span><span><b>SI-MUDA</b><small>Kabupaten Kuningan</small></span></a>
+  <nav>
+   <a href="#tentang">Tentang</a>
+   <button class="btn btn-outline" onclick="showRoleGateway()">Masuk Sistem</button>
+   <button class="btn btn-primary" onclick="showAuth('register','user')">Daftar Akun →</button>
+  </nav>
+ </header>
+ <main class="wrap">
+  <section class="hero">
+   <div class="hero-copy">
+    <span class="eyebrow">✦ RUANG TUMBUH PEMUDA KUNINGAN</span>
+    <h1>Waktunya karya pemuda <span>terdata & terhubung.</span></h1>
+    <p>SI-MUDA adalah wadah digital resmi untuk pendataan komunitas serta wirausaha muda di bawah naungan DISPORAPAR Kabupaten Kuningan.</p>
+    <div class="hero-actions">
+     <button class="btn btn-primary" onclick="showAuth('register','user')">Mulai Pendaftaran →</button>
+     <button class="btn btn-outline" onclick="showRoleGateway()">Portal Login</button>
+    </div>
+   </div>
+  </section>
+
+  <section class="stats-strip">
+   <div><b>01. Daftarkan</b><span>Komunitas / Usaha</span></div>
+   <div><b>02. Verifikasi</b><span>Proses oleh Admin</span></div>
+   <div><b>03. Pantau Status</b><span>Cek persetujuan berkas</span></div>
+   <div><b>04. Terhubung</b><span>Jaringan pemuda daerah</span></div>
+  </section>
+
+  <section class="features" id="tentang">
+   <article class="feature">
+    <div class="feature-icon">♧</div>
+    <h3>Pendataan Komunitas</h3>
+    <p>Wadah pendaftaran resmi untuk seluruh organisasi dan komunitas pemuda daerah.</p>
+   </article>
+   <article class="feature">
+    <div class="feature-icon">▣</div>
+    <h3>Wirausaha Muda</h3>
+    <p>Dukung dan promosikan unit usaha kreatif yang dipelopori pemuda Kuningan.</p>
+   </article>
+   <article class="feature">
+    <div class="feature-icon">✓</div>
+    <h3>Verifikasi Transparan</h3>
+    <p>Pantau catatan perbaikan dan persetujuan berkas secara langsung dari sistem.</p>
+   </article>
+  </section>
+ </main>
+ <footer class="footer">
+  <div class="wrap" style="display:flex;justify-content:space-between;align-items:center">
+   <span>SI-MUDA DISPORAPAR Kabupaten Kuningan</span>
+   <span>© 2026 Hak Cipta Dilindungi</span>
+  </div>
+ </footer>
+</div>
+
+<!-- 3. AUTH (LOGIN & REGISTER) -->
+<div id="auth" class="auth hidden">
+ <aside class="auth-side">
+  <a class="brand" href="#" onclick="showRoleGateway()"><span class="brand-mark" style="background:#fff;color:var(--navy)">SM</span><span><b style="color:#fff">SI-MUDA</b><small style="color:#d0e2f2">Kabupaten Kuningan</small></span></a>
+  <div>
+   <span class="eyebrow" style="color:#9ec5e6">SISTEM INTEGRASI KEPEMUDAAN</span>
+   <h2 style="font-size:32px;line-height:1.2;margin-top:10px">Terwujudnya Pemuda Kuningan yang Aktif & Mandiri.</h2>
+  </div>
+  <div style="font-size:10px;color:#a8cde8">DISPORAPAR KABUPATEN KUNINGAN</div>
+ </aside>
+ <main class="auth-main">
+  <div class="auth-card" id="auth-content"></div>
+ </main>
+</div>
+
+<!-- 4. APP SHELL (APPLICATION CONTAINER) -->
+<div id="application" class="app-shell hidden">
+ <aside class="sidebar" id="sidebar">
+  <a class="brand" href="#"><span class="brand-mark">SM</span><span><b>SI-MUDA</b><small>Kabupaten Kuningan</small></span></a>
+  <div class="side-label">MENU KONTROL</div>
+  <div id="side-menu"></div>
+  <div class="side-bottom">
+   <button class="side-link" onclick="logout()"><span class="ico">⇥</span> Keluar Akun</button>
+  </div>
+ </aside>
+ <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="toggleSidebar(false)"></div>
+ 
+ <main class="app-main">
+  <header class="topbar">
+   <div style="display:flex;align-items:center;gap:10px;min-width:0">
+    <button class="btn btn-outline btn-sm" id="mobile-menu-btn" onclick="toggleSidebar()" style="display:none;padding:6px 10px;flex-shrink:0">☰</button>
+    <div style="min-width:0;overflow:hidden">
+     <h2 id="top-title" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Dashboard</h2>
+     <small style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">SI-MUDA · Kepemudaan Kuningan</small>
+    </div>
+   </div>
+   <div class="top-right">
+    <div class="user-mini">
+     <div class="avatar" id="user-avatar">U</div>
+     <div style="text-align:left">
+      <b id="user-name" style="font-size:11px;display:block;line-height:1.2">Pengguna</b>
+      <small id="user-role" style="display:block;font-size:9px;color:var(--muted)">Role</small>
+     </div>
+    </div>
+   </div>
+  </header>
+  
+  <section class="page" id="page-content"></section>
+ </main>
+</div>
+
+<div id="modal-root"></div>
+<div id="toast" class="toast hidden"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+let currentUser = null;
+let currentPage = 'dashboard';
+
+// Mock Data Awal
+let records = JSON.parse(localStorage.getItem('simuda_records')||'null') || [
+ {id:1, type:'Komunitas', name:'Komunitas Kreatif Muda Kuningan', owner:'Andi Pratama', field:'Kreativitas', youthCount:45, date:'2026-10-20', status:'Disetujui', email:'user@simuda.demo', address:'Jl. Siliwangi No. 12'},
+ {id:2, type:'Wirausaha', name:'Kopi Rimba Kuningan', owner:'Siti Rahma', field:'Kuliner', youthCount:8, date:'2026-10-25', status:'Menunggu Verifikasi', email:'siti@demo.com', address:'Cisantana, Cigugur'},
+ {id:3, type:'Komunitas', name:'Forum Pemuda Pelopor Desa', owner:'Rizky Maulana', field:'Sosial', youthCount:110, date:'2026-10-29', status:'Sedang Ditinjau', email:'rizky@demo.com', address:'Kec. Jalaksana'},
+ {id:4, type:'Wirausaha', name:'Kuningan Tech Startup', owner:'Budi Santoso', field:'Teknologi', youthCount:12, date:'2026-11-01', status:'Disetujui', email:'budi@demo.com', address:'Kec. Kramatmulya'}
+];
+
+function toast(msg){
+ const el=$('#toast'); el.textContent=msg; el.classList.remove('hidden');
+ setTimeout(()=>el.classList.add('hidden'), 2600);
+}
+
+function showRoleGateway(){
+ $('#landing').classList.add('hidden'); $('#auth').classList.add('hidden'); $('#application').classList.add('hidden');
+ $('#role-gateway').classList.remove('hidden');
+}
+
+function showLanding(){
+ $('#role-gateway').classList.add('hidden'); $('#auth').classList.add('hidden'); $('#application').classList.add('hidden');
+ $('#landing').classList.remove('hidden');
+}
+
+function showAuth(mode, role='user'){
+ $('#role-gateway').classList.add('hidden'); $('#landing').classList.add('hidden');
+ $('#auth').classList.remove('hidden');
+ renderAuth(mode, role);
+}
+
+function renderAuth(mode, role='user'){
+ const isReg = mode === 'register';
+ const roleTitle = role === 'admin' ? 'Administrator' : 'User Pemuda';
+ 
+ $('#auth-content').innerHTML = `
+  <span class="eyebrow">${isReg ? 'PENDAFTARAN BARU' : 'OTENTIKASI MASUK'}</span>
+  <h1 style="font-size:24px;color:var(--navy);margin:8px 0 16px">${isReg ? 'Buat Akun User' : 'Login ' + roleTitle}</h1>
+  <div id="auth-alert"></div>
+  <form id="auth-form">
+   ${isReg ? `<div class="field"><label>Nama Lengkap</label><input name="name" required placeholder="Nama lengkap Anda"></div>` : ''}
+   <div class="field"><label>Alamat Email</label><input name="email" type="email" required placeholder="nama@email.com"></div>
+   <div class="field"><label>Password</label><input name="password" type="password" required placeholder="••••••••"></div>
+   <button class="btn btn-primary" style="width:100%;margin-top:10px" type="submit">${isReg ? 'Daftar Akun User' : 'Masuk Sistem'} →</button>
+  </form>
+  
+  <div style="margin-top:16px;text-align:center;font-size:11px">
+   ${isReg ? 'Sudah punya akun? <a href="#" onclick="renderAuth(\'login\',\'user\');return false" style="color:var(--blue);font-weight:700">Masuk di sini</a>' : 
+     role==='user' ? 'Belum punya akun? <a href="#" onclick="renderAuth(\'register\',\'user\');return false" style="color:var(--blue);font-weight:700">Daftar sekarang</a>' : ''}
+  </div>
+
+  ${!isReg && role==='admin' ? `<div class="demo-hint"><b>Akses Akun Demo Admin:</b><br>Email: <code>admin@simuda.demo</code> | Password: <code>admin123</code></div>` : ''}
+  ${!isReg && role==='user' ? `<div class="demo-hint"><b>Akses Akun Demo User:</b><br>Email: <code>user@simuda.demo</code> | Password: <code>user123</code></div>` : ''}
+  
+  <div style="margin-top:18px;text-align:center"><a href="#" onclick="showRoleGateway();return false" style="font-size:11px;color:var(--muted)">← Kembali ke Pilihan Akses</a></div>
+ `;
+
+ $('#auth-form').onsubmit = e => {
+  e.preventDefault();
+  const f = new FormData(e.target);
+  const email = String(f.get('email')).trim().toLowerCase();
+  const password = f.get('password');
+
+  if(isReg){
+   toast('Akun berhasil dibuat! Silakan login.');
+   renderAuth('login', 'user');
+  } else {
+   if(role==='admin' && email==='admin@simuda.demo' && password==='admin123'){
+    enterApp({name:'Admin DISPORAPAR', email, role:'admin'});
+   } else if(role==='user' && (email==='user@simuda.demo' || email.includes('@')) && password){
+    enterApp({name: f.get('name') || 'Andi Pratama', email, role:'user'});
+   } else {
+    $('#auth-alert').innerHTML = `<div class="alert error">Email atau password ${roleTitle} tidak sesuai.</div>`;
+   }
+  }
+ };
+}
+
+function enterApp(user){
+ currentUser = user;
+ $('#auth').classList.add('hidden');
+ $('#application').classList.remove('hidden');
+ currentPage = 'dashboard';
+ renderApp();
+}
+
+function logout(){
+ currentUser = null;
+ $('#application').classList.add('hidden');
+ showRoleGateway();
+ toast('Berhasil keluar dari akun.');
+}
+
+// Navigasi Terpisah Sesuai Role
+const adminMenu = [
+ ['dashboard','▦','Dashboard Admin'],
+ ['registrations','▤','Verifikasi Berkas'],
+ ['community','♧','Data Komunitas'],
+ ['business','▣','Data Wirausaha'],
+ ['reports','▥','Analisis & Rekap'],
+ ['profile','⚙','Profil Saya']
+];
+
+const userMenu = [
+ ['dashboard','▦','Dashboard Saya'],
+ ['register-community','＋','Daftar Komunitas'],
+ ['register-business','＋','Daftar Wirausaha'],
+ ['history','▤','Status Pendaftaran'],
+ ['directory','♧','Direktori Pemuda'],
+ ['profile','⚙','Profil Saya']
+];
+
+function renderApp(){
+ const isAdmin = currentUser.role === 'admin';
+ const menu = isAdmin ? adminMenu : userMenu;
+ 
+ $('#side-menu').innerHTML = menu.map(([id,ic,lbl]) => `
+  <button class="side-link ${currentPage===id?'active':''}" onclick="go('${id}')">
+   <span class="ico">${ic}</span> ${lbl}
+  </button>
+ `).join('');
+ 
+ $('#user-name').textContent = currentUser.name;
+ $('#user-role').textContent = isAdmin ? 'Administrator' : 'User Pemuda';
+ $('#user-avatar').textContent = currentUser.name[0].toUpperCase();
+ $('#top-title').textContent = (menu.find(x=>x[0]===currentPage)||[])[2] || 'Dashboard';
+ 
+ renderPage();
+}
+
+function go(p){
+ currentPage = p;
+ $('#sidebar').classList.remove('open');
+ $('#sidebar-backdrop')?.classList.remove('show');
+ renderApp();
+}
+
+function toggleSidebar(force){
+ const side = $('#sidebar'), backdrop = $('#sidebar-backdrop');
+ const open = typeof force === 'boolean' ? force : !side.classList.contains('open');
+ side.classList.toggle('open', open);
+ backdrop?.classList.toggle('show', open);
+}
+
+function statusPill(s){
+ const map = {'Disetujui':'approved','Sedang Ditinjau':'review','Perlu Perbaikan':'revision','Ditolak':'rejected'};
+ return `<span class="status ${map[s]||''}">${s}</span>`;
+}
+
+function renderPage(){
+ const isAdmin = currentUser.role === 'admin';
+ let html = '';
+
+ switch(currentPage){
+  case 'dashboard':
+   if(isAdmin){
+    // DASHBOARD ADMIN: ANALISIS & KONTROL
+    const totalKomunitas = records.filter(r=>r.type==='Komunitas').length;
+    const totalWirausaha = records.filter(r=>r.type==='Wirausaha').length;
+    const totalPemuda = records.reduce((acc,curr)=> acc + (parseInt(curr.youthCount)||0), 0);
+    const pendingVerif = records.filter(r=>r.status==='Menunggu Verifikasi'||r.status==='Sedang Ditinjau').length;
+
+    html = `
+     <div class="admin-header">
+      <div>
+       <span class="admin-badge">Pusat Pengawasan Admin</span>
+       <h1 style="font-size:20px;margin-top:2px">Panel Kontrol SI-MUDA Kuningan</h1>
+       <p style="font-size:11px;color:#b0cce5">Pantau statistik cakupan pemuda dan verifikasi berkas pendaftaran.</p>
+      </div>
+      <button class="btn btn-soft btn-sm" onclick="exportCSV()">📥 Download Rekap CSV</button>
+     </div>
+
+     <div class="stat-grid">
+      <article class="stat-card highlight">
+       <div class="stat-top"><span>ESTIMASI PEMUDA TERDAPAT</span><i class="stat-icon">👥</i></div>
+       <strong>${totalPemuda} <small style="font-size:12px;font-weight:normal">Orang</small></strong>
+       <small>Anggota dari seluruh kelompok</small>
+      </article>
+      <article class="stat-card">
+       <div class="stat-top"><span>PERLU VERIFIKASI</span><i class="stat-icon">⏳</i></div>
+       <strong style="color:var(--orange)">${pendingVerif} <small style="font-size:12px;font-weight:normal">Berkas</small></strong>
+       <small>Memerlukan persetujuan admin</small>
+      </article>
+      <article class="stat-card">
+       <div class="stat-top"><span>TOTAL KOMUNITAS</span><i class="stat-icon">♧</i></div>
+       <strong>${totalKomunitas}</strong>
+       <small>Grup komunitas terdaftar</small>
+      </article>
+      <article class="stat-card">
+       <div class="stat-top"><span>TOTAL WIRAUSAHA</span><i class="stat-icon">▣</i></div>
+       <strong>${totalWirausaha}</strong>
+       <small>Unit usaha pemuda</small>
+      </article>
+     </div>
+
+     <div class="content-grid">
+      <div class="panel">
+       <div class="panel-head">
+        <h3>Pendaftaran Masuk (Verifikasi Cepat)</h3>
+        <button class="btn btn-outline btn-sm" onclick="go('registrations')">Kelola Semua</button>
+       </div>
+       <div class="table-wrap">
+        <table>
+         <thead>
+          <tr><th>ORGANISASI / USAHA</th><th>PJ / KETUA</th><th>ANGGOTA</th><th>STATUS</th><th>TINDAKAN KENDALI</th></tr>
+         </thead>
+         <tbody>
+          ${records.map(r=> `
+           <tr>
+            <td><b>${r.name}</b><span class="cell-type">${r.type} • ${r.field}</span></td>
+            <td>${r.owner}</td>
+            <td><b>${r.youthCount || 0}</b> Pemuda</td>
+            <td>${statusPill(r.status)}</td>
+            <td><button class="btn btn-primary btn-sm" onclick="reviewRecord(${r.id})">Proses</button></td>
+           </tr>
+          `).join('')}
+         </tbody>
+        </table>
+       </div>
+      </div>
+
+      <div class="panel">
+       <div class="panel-head"><h3>Rasio Jenis Pendaftaran</h3></div>
+       <p style="font-size:11px;color:var(--muted)">Komunitas vs Wirausaha Pemuda:</p>
+       
+       <div class="bar-container">
+        <div class="bar-segment" style="width:${(totalKomunitas/(totalKomunitas+totalWirausaha||1))*100}%;background:var(--blue)"></div>
+        <div class="bar-segment" style="width:${(totalWirausaha/(totalKomunitas+totalWirausaha||1))*100}%;background:var(--orange)"></div>
+       </div>
+
+       <div class="bar-legend">
+        <div><span class="dot" style="background:var(--blue)"></span>Komunitas (${totalKomunitas})</div>
+        <div><span class="dot" style="background:var(--orange)"></span>Wirausaha (${totalWirausaha})</div>
+       </div>
+
+       <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
+       <h3 style="font-size:12px;margin-bottom:10px">Aksi Cepat Admin</h3>
+       <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="btn btn-outline btn-sm" style="justify-content:flex-start" onclick="exportCSV()">📄 Ekspor Data Lengkap (CSV)</button>
+        <button class="btn btn-outline btn-sm" style="justify-content:flex-start" onclick="go('reports')">📊 Lihat Ringkasan Laporan</button>
+       </div>
+      </div>
+     </div>
+    `;
+   } else {
+    // DASHBOARD USER: RUANG PEMUDA
+    const myRegs = records.filter(r => r.email === currentUser.email || r.owner === currentUser.name);
+
+    html = `
+     <div class="user-header">
+      <span class="eyebrow" style="color:#b8dbf8">RUANG TUMBUH PEMUDA KUNINGAN</span>
+      <h1 style="font-size:22px;margin:6px 0">Selamat Datang, ${currentUser.name}!</h1>
+      <p style="font-size:11px;color:#d0e4f7">Daftarkan komunitas atau usaha Anda untuk mendapatkan pendataan dan dukungan resmi DISPORAPAR.</p>
+     </div>
+
+     <div class="stat-grid">
+      <article class="stat-card">
+       <div class="stat-top"><span>PENDAFTARAN SAYA</span><i class="stat-icon">📝</i></div>
+       <strong>${myRegs.length}</strong>
+       <small>Pengajuan dibuat</small>
+      </article>
+      <article class="stat-card">
+       <div class="stat-top"><span>DISETUJUI</span><i class="stat-icon">✓</i></div>
+       <strong style="color:var(--green)">${myRegs.filter(r=>r.status==='Disetujui').length}</strong>
+       <small>Terverifikasi resmi</small>
+      </article>
+      <article class="stat-card">
+       <div class="stat-top"><span>DALAM PROSES</span><i class="stat-icon">◷</i></div>
+       <strong>${myRegs.filter(r=>r.status!=='Disetujui').length}</strong>
+       <small>Review / Perbaikan</small>
+      </article>
+      <article class="stat-card" style="background:var(--sky)">
+       <div class="stat-top"><span>DIREKTORI REGIONAL</span><i class="stat-icon">🌐</i></div>
+       <strong>${records.filter(r=>r.status==='Disetujui').length}</strong>
+       <small>Rekan terdaftar</small>
+      </article>
+     </div>
+
+     <div class="content-grid">
+      <div class="panel">
+       <div class="panel-head">
+        <h3>Status Pendaftaran Saya</h3>
+        <button class="btn btn-soft btn-sm" onclick="go('history')">Riwayat Lengkap</button>
+       </div>
+       ${myRegs.length ? `
+        <div class="table-wrap">
+         <table>
+          <thead><tr><th>NAMA PENDAFTARAN</th><th>KATEGORI</th><th>TANGGAL</th><th>STATUS</th></tr></thead>
+          <tbody>
+           ${myRegs.map(r=>`
+            <tr>
+             <td><b>${r.name}</b></td>
+             <td>${r.type} (${r.field})</td>
+             <td>${r.date}</td>
+             <td>${statusPill(r.status)}</td>
+            </tr>
+           `).join('')}
+          </tbody>
+         </table>
+        </div>
+       ` : `
+        <div style="text-align:center;padding:30px 10px;color:var(--muted);font-size:12px">
+         Anda belum mendaftarkan komunitas atau wirausaha.<br><br>
+         <button class="btn btn-primary btn-sm" onclick="go('register-community')">Daftarkan Sekarang →</button>
+        </div>
+       `}
+      </div>
+
+      <div class="panel">
+       <div class="panel-head"><h3>Layanan Pendaftaran</h3></div>
+       <div style="display:flex;flex-direction:column;gap:10px">
+        <button class="btn btn-outline" style="justify-content:flex-start;padding:14px" onclick="go('register-community')">
+         <span style="font-size:20px">♧</span>
+         <div style="text-align:left">
+          <b>Daftarkan Komunitas</b>
+          <small style="display:block;color:var(--muted)">Untuk organisasi dan kelompok pemuda</small>
+         </div>
+        </button>
+        <button class="btn btn-outline" style="justify-content:flex-start;padding:14px" onclick="go('register-business')">
+         <span style="font-size:20px">▣</span>
+         <div style="text-align:left">
+          <b>Daftarkan Wirausaha</b>
+          <small style="display:block;color:var(--muted)">Untuk usaha mandiri atau UMKM pemuda</small>
+         </div>
+        </button>
+       </div>
+      </div>
+     </div>
+    `;
+   }
+   break;
+
+  case 'register-community':
+  case 'register-business':
+   {
+    const isComm = currentPage === 'register-community';
+    const typeLabel = isComm ? 'Komunitas' : 'Wirausaha';
+    html = `
+     <div class="panel" style="max-width:680px;margin:auto">
+      <h2 style="font-size:18px;color:var(--navy);margin-bottom:4px">Form Pendaftaran ${typeLabel} Pemuda</h2>
+      <p style="font-size:11px;color:var(--muted);margin-bottom:20px">Lengkapi data berikut untuk mengajukan verifikasi ke DISPORAPAR.</p>
+      
+      <form id="form-registration">
+       <div class="field-row">
+        <div class="field"><label>Nama ${typeLabel}</label><input name="name" required placeholder="Contoh: Pemuda Kreatif Kuningan"></div>
+        <div class="field"><label>Penanggung Jawab / Ketua</label><input name="owner" required placeholder="Nama lengkap"></div>
+       </div>
+       <div class="field-row">
+        <div class="field">
+         <label>Bidang Fokus</label>
+         <select name="field" required>
+          ${(isComm ? ['Sosial','Olahraga','Seni & Budaya','Teknologi','Lingkungan','Pendidikan'] : ['Kuliner','Fashion','Jasa Digital','Kerajinan','Pertanian','Perdagangan']).map(x=>`<option>${x}</option>`).join('')}
+         </select>
+        </div>
+        <div class="field">
+         <label>Jumlah Anggota / Pemuda Terlibat</label>
+         <input name="youthCount" type="number" min="1" required placeholder="Contoh: 15">
+        </div>
+       </div>
+       <div class="field"><label>Alamat Sekretariat / Tempat Usaha</label><input name="address" required placeholder="Alamat lengkap di Kuningan"></div>
+       <div class="field"><label>Deskripsi Singkat Profil</label><textarea name="description" required placeholder="Jelaskan mengenai kegiatan atau usaha Anda..."></textarea></div>
+       
+       <div style="display:flex;gap:10px;margin-top:20px;justify-content:flex-end">
+        <button class="btn btn-outline" type="button" onclick="go('dashboard')">Batal</button>
+        <button class="btn btn-primary" type="submit">Kirim Pendaftaran →</button>
+       </div>
+      </form>
+     </div>
+    `;
+   }
+   break;
+
+  case 'registrations':
+  case 'community':
+  case 'business':
+  case 'history':
+   {
+    const list = records.filter(r => 
+     currentPage === 'community' ? r.type === 'Komunitas' :
+     currentPage === 'business' ? r.type === 'Wirausaha' :
+     currentPage === 'history' ? (r.email === currentUser.email || r.owner === currentUser.name) : true
+    );
+    
+    html = `
+     <div class="panel">
+      <div class="panel-head">
+       <h3>${currentPage==='registrations'?'Data Seluruh Pendaftaran':currentPage==='community'?'Data Komunitas':currentPage==='business'?'Data Wirausaha':'Riwayat Pendaftaran Saya'}</h3>
+      </div>
+      <div class="table-wrap">
+       <table>
+        <thead>
+         <tr><th>NAMA ORGANISASI</th><th>PENANGGUNG JAWAB</th><th>BIDANG</th><th>ANGGOTA</th><th>TANGGAL</th><th>STATUS</th>${isAdmin && currentPage !== 'history' ? '<th>AKSI ADMIN</th>':''}</tr>
+        </thead>
+        <tbody>
+         ${list.map(r=> `
+          <tr>
+           <td><b>${r.name}</b><span class="cell-type">${r.type}</span></td>
+           <td>${r.owner}</td>
+           <td>${r.field}</td>
+           <td><b>${r.youthCount || 0}</b> Pemuda</td>
+           <td>${r.date}</td>
+           <td>${statusPill(r.status)}</td>
+           ${isAdmin && currentPage !== 'history' ? `<td><button class="btn btn-primary btn-sm" onclick="reviewRecord(${r.id})">Ubah Status</button></td>` : ''}
+          </tr>
+         `).join('')}
+        </tbody>
+       </table>
+      </div>
+     </div>
+    `;
+   }
+   break;
+
+  case 'directory':
+   html = `
+    <div class="panel">
+     <div class="panel-head"><h3>Direktori Pemuda Kuningan (Terverifikasi)</h3></div>
+     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px">
+      ${records.filter(r=>r.status==='Disetujui').map(r=>`
+       <div class="feature">
+        <div class="feature-icon">${r.type==='Komunitas'?'♧':'▣'}</div>
+        <h3>${r.name}</h3>
+        <p><b>${r.type}</b> · ${r.field}<br>Penanggung Jawab: ${r.owner}<br>Keterlibatan: ${r.youthCount} Pemuda</p>
+       </div>
+      `).join('') || '<p class="muted">Belum ada data publik yang disetujui.</p>'}
+     </div>
+    </div>
+   `;
+   break;
+
+  case 'reports':
+   html = `
+    <div class="panel">
+     <div class="panel-head">
+      <h3>Rekapitulasi Analisis Data Pemuda</h3>
+      <button class="btn btn-soft btn-sm" onclick="exportCSV()">📥 Download CSV</button>
+     </div>
+     <p style="font-size:12px;color:var(--muted);margin-bottom:16px">Ringkasan status pendaftaran berkas di sistem SI-MUDA:</p>
+     ${['Menunggu Verifikasi','Sedang Ditinjau','Disetujui','Perlu Perbaikan','Ditolak'].map(s=>`
+      <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:10px 0;font-size:12px">
+       <span>Status: <b>${s}</b></span>
+       <b>${records.filter(r=>r.status===s).length} Berkas</b>
+      </div>
+     `).join('')}
+    </div>
+   `;
+   break;
+
+  case 'profile':
+   html = `
+    <div class="panel" style="max-width:500px;margin:auto">
+     <h3 style="margin-bottom:16px">Profil Saya</h3>
+     <div class="field"><label>Nama Pengguna</label><input value="${currentUser.name}" disabled></div>
+     <div class="field"><label>Email</label><input value="${currentUser.email}" disabled></div>
+     <div class="field"><label>Peran Akses</label><input value="${currentUser.role === 'admin' ? 'Administrator' : 'User Pemuda'}" disabled></div>
+    </div>
+   `;
+   break;
+
+  default:
+   html = `<div class="panel"><h3>Halaman tidak ditemukan.</h3></div>`;
+ }
+
+ $('#page-content').innerHTML = html;
+
+ const regForm = $('#form-registration');
+ if(regForm){
+  regForm.onsubmit = e => {
+   e.preventDefault();
+   const f = new FormData(e.target);
+   const type = currentPage === 'register-community' ? 'Komunitas' : 'Wirausaha';
+   const newRec = {
+    id: Date.now(),
+    type,
+    name: f.get('name'),
+    owner: f.get('owner'),
+    field: f.get('field'),
+    youthCount: parseInt(f.get('youthCount')) || 0,
+    address: f.get('address'),
+    date: new Date().toISOString().slice(0,10),
+    status: 'Menunggu Verifikasi',
+    email: currentUser.email
+   };
+   records.push(newRec);
+   localStorage.setItem('simuda_records', JSON.stringify(records));
+   toast('Pendaftaran berhasil dikirim!');
+   go(isAdmin ? 'registrations' : 'dashboard');
+  };
+ }
+}
+
+/* VERIFIKASI ADMIN (MODAL) */
+function reviewRecord(id){
+ const r = records.find(x=>x.id===id);
+ if(!r) return;
+ $('#modal-root').innerHTML = `
+  <div class="backdrop" onclick="closeModal(event)">
+   <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head">
+     <h3 style="margin:0;font-size:14px">Ubah Status: ${r.name}</h3>
+     <button class="btn btn-outline btn-sm" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+     <p style="font-size:11px;color:var(--muted);margin-bottom:14px">Jenis: <b>${r.type} (${r.field})</b> | PJ: <b>${r.owner}</b></p>
+     <div class="field">
+      <label>Status Verifikasi</label>
+      <select id="review-status">
+       <option ${r.status==='Menunggu Verifikasi'?'selected':''}>Menunggu Verifikasi</option>
+       <option ${r.status==='Sedang Ditinjau'?'selected':''}>Sedang Ditinjau</option>
+       <option ${r.status==='Disetujui'?'selected':''}>Disetujui</option>
+       <option ${r.status==='Perlu Perbaikan'?'selected':''}>Perlu Perbaikan</option>
+       <option ${r.status==='Ditolak'?'selected':''}>Ditolak</option>
+      </select>
+     </div>
+     <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px">
+      <button class="btn btn-outline" onclick="closeModal()">Batal</button>
+      <button class="btn btn-primary" onclick="saveReview(${id})">Simpan Perubahan</button>
+     </div>
+    </div>
+   </div>
+  </div>
+ `;
+}
+
+function saveReview(id){
+ const r = records.find(x=>x.id===id);
+ if(r){
+  r.status = $('#review-status').value;
+  localStorage.setItem('simuda_records', JSON.stringify(records));
+  closeModal();
+  renderApp();
+  toast('Status pendaftaran diperbarui.');
+ }
+}
+
+function closeModal(e){
+ if(!e || e.target.classList.contains('backdrop')) $('#modal-root').innerHTML = '';
+}
+
+function exportCSV(){
+ let rows = [['ID','Jenis','Nama Organisasi','Penanggung Jawab','Bidang','Estimasi Pemuda','Status']];
+ records.forEach(r => rows.push([r.id, r.type, r.name, r.owner, r.field, r.youthCount||0, r.status]));
+ let csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
+ let encodedUri = encodeURI(csvContent);
+ let link = document.createElement("a");
+ link.setAttribute("href", encodedUri);
+ link.setAttribute("download", "rekap_pemuda_kuningan.csv");
+ document.body.appendChild(link);
+ link.click();
+ document.body.removeChild(link);
+}
+
+// Inisialisasi Deteksi Mobile Menu Button
+window.addEventListener('resize', () => {
+ const btn = $('#mobile-menu-btn');
+ if(btn) btn.style.display = window.innerWidth <= 768 ? 'inline-flex' : 'none';
+});
+window.dispatchEvent(new Event('resize'));
+</script>
+</body>
+</html>
